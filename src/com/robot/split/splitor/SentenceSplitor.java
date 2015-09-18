@@ -1,4 +1,4 @@
-package split.splitor;
+package com.robot.split.splitor;
 
 import java.util.ArrayList;
 

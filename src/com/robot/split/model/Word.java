@@ -1,4 +1,4 @@
-package split.model;
+package com.robot.split.model;
 
 /**
  * Created by terry on 15/9/18.

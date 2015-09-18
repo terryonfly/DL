@@ -3,8 +3,8 @@ package com.robot;
 import java.io.*;
 import java.util.ArrayList;
 
-import split.model.Sentence;
-import split.splitor.*;
+import com.robot.split.model.Sentence;
+import com.robot.split.splitor.*;
 
 /**
  * Created by terry on 15/9/18.

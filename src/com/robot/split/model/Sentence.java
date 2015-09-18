@@ -1,4 +1,4 @@
-package split.model;
+package com.robot.split.model;
 
 import java.util.ArrayList;
 

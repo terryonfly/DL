@@ -1,4 +1,4 @@
-package split.splitor;
+package com.robot.split.splitor;
 
 /**
  * Created by terry on 15/9/18.

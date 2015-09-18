@@ -1,8 +1,8 @@
-package split.splitor;
+package com.robot.split.splitor;
 
-import database.Connector;
-import split.model.Sentence;
-import split.model.Word;
+import com.robot.database.Connector;
+import com.robot.split.model.Sentence;
+import com.robot.split.model.Word;
 
 import java.util.ArrayList;
 import java.util.HashMap;

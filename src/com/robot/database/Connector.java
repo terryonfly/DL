@@ -1,7 +1,7 @@
-package database;
+package com.robot.database;
 
 import java.sql.*;
-import split.model.*;
+import com.robot.split.model.*;
 
 public class Connector {
     String driver = "com.mysql.jdbc.Driver";
