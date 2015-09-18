@@ -1,2 +1,2 @@
-javac -cp src/ -d bin/ src/com/robot/Main.java
-java -cp bin/ com.robot.Main
+javac -cp src/ -d bin/ src/com/robot/AI.java
+java -cp bin/ com.robot.AI
