@@ -6,6 +6,8 @@ package com.robot;
 public class AI {
 
     public static void main(String[] args) {
-        System.out.println("Hello!");
+        System.out.println("===== Begin =====");
+        //
+        System.out.println("====== End ======");
     }
 }
