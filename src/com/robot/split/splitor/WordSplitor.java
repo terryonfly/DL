@@ -14,11 +14,13 @@ public class WordSplitor {
 
     Connector db;
     HashMap<String, Word> reuse_words;
+    Feedback fb;
 
     public WordSplitor() {
         db = new Connector();
         db.connect();
         reuse_words = new HashMap<String, Word>();
+        fb = new Feedback();
     }
 
     public Sentence split_word(String a_string_sentence) {
@@ -26,6 +28,7 @@ public class WordSplitor {
         ArrayList<Sentence> sentences = get_posible_sentences(a_string_sentence);
         System.out.println();
         Sentence best_sentence = choose_best_sentence(sentences);
+        fb.feedback_sentence(best_sentence);
         return best_sentence;
     }
 

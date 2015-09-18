@@ -28,4 +28,8 @@ public class Word {
     public String to_string() {
         return word_string;
     }
+
+    public String get_word_type() {
+        return word_type;
+    }
 }
