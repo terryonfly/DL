@@ -32,7 +32,7 @@ public class AI {
                     if (string_sentence.length() > 40)
                         continue;
                     Sentence sentence = wordSplitor.split_word(string_sentence);
-                    System.out.println(line_index + " - " + sentence.to_string());
+                    System.out.println(line_index + " [" + String.format("%.3f", (line_index / 672.48)) + "%] - " + sentence.to_string());
 //                    System.out.println();
                 }
                 readed_string = reader.readLine();
