@@ -53,10 +53,10 @@ public class WordSplitor {
 	}
 
     public Sentence split_word(String a_string_sentence) {
-        System.out.print("Proccessing : ");
+//        System.out.print("Proccessing : ");
         ArrayList<Sentence> sentences = get_posible_sentences(a_string_sentence);
-        System.out.println();
-        System.out.println("Posible sentences count : " + sentences.size());
+//        System.out.println();
+//        System.out.println("Posible sentences count : " + sentences.size());
         Sentence best_sentence = choose_best_sentence(sentences);
         sentences.clear();
         fb.feedback_sentence(best_sentence);
