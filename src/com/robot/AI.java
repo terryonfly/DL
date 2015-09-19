@@ -26,7 +26,7 @@ public class AI {
                     String string_sentence = string_sentences.get(i);
                     System.out.println("=================");
                     System.out.println("Checking : " + string_sentence);
-                    if (string_sentence.length() > 50)
+                    if (string_sentence.length() > 40)
                         continue;
                     Sentence sentence = wordSplitor.split_word(string_sentence);
                     System.out.println("Result : " + sentence.to_string());
