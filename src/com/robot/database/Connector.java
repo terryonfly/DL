@@ -23,9 +23,8 @@ public class Connector {
                 conn = null;
             }
             conn = DriverManager.getConnection(url, user, password);
-            if (!conn.isClosed()) {
-                System.out.println("Succeeded connecting to the Database");
-            } else {
+            if (conn.isClosed()) {
+                System.out.println("Failure connecting to the Database");
                 return false;
             }
         } catch(ClassNotFoundException e) {

@@ -27,7 +27,7 @@ public class WordSplitor {
 	public void preload_words() {
 		System.out.println("Starting preload...");
 		int page_i = 0;
-		int page_size = 1000;
+		int page_size = 3000;
 		boolean hasnext = true;
 		do {
 			System.out.println("load " + (page_i * page_size) + " page.");
