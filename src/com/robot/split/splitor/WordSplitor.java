@@ -21,7 +21,36 @@ public class WordSplitor {
         db.connect();
         reuse_words = new HashMap<String, Word>();
         fb = new Feedback();
+		preload_words();
     }
+
+	public void preload_words() {
+		System.out.println("Starting preload...");
+		int page_i = 0;
+		int page_size = 1000;
+		boolean hasnext = true;
+		do {
+			System.out.println("load " + (page_i * page_size) + " page.");
+			ArrayList<Word> words = db.preload_words("word_sogou", page_i * page_size, page_size);
+			if (words.size() == 0)
+				hasnext = false;
+			for (int i = 0; i < words.size(); i ++) {
+				/*
+				if (words.get(i).get_word_type().equals("|")) {// if word_sogou has word and has no type
+                    Word pre_first_word = db.check_word(words.get(i).to_string(), "word_cn");
+                    if (pre_first_word != null) {
+						System.out.println("Fixed word type (" + (page_i * page_size + i) + ")");
+						add_word_to_cache(pre_first_word.to_string(), pre_first_word);
+						continue;
+                    }
+				}
+				*/
+				add_word_to_cache(words.get(i).to_string(), words.get(i));
+			}
+			page_i ++;
+		} while (hasnext);
+		System.out.println("Preload did finished");
+	}
 
     public Sentence split_word(String a_string_sentence) {
         System.out.print("Proccessing : ");
@@ -41,30 +70,32 @@ public class WordSplitor {
                 first_word = search_word_from_cache(first_string_word);
             }
             if (first_word == null) {// if cache = null
+				/*
                 if (first_word == null) {
                     first_word = db.check_word(first_string_word, "word_sogou");
                 }
                 if (first_word == null) {// if word_sogou = null
                     first_word = db.check_word(first_string_word, "word_cn");
                 } else {
-                    if (first_word.to_string().equals("|")) {// if word_sogou has word and has no type
-                        System.out.print("finding type : ");
+                    if (first_word.get_word_type().equals("|")) {// if word_sogou has word and has no type
+                        //System.out.print("finding type : ");
                         Word pre_first_word = db.check_word(first_string_word, "word_cn");
                         if (pre_first_word != null) {
-                            System.out.println("found");
+                            //System.out.println("found");
                             first_word = pre_first_word;
                         } else {
-                            System.out.println("not found");
+                            //System.out.println("not found");
                         }
                     }
                 }
+				*/
                 if (first_word == null && len == 1) {
                     first_word = db.check_word(first_string_word, "char_cn");
                 }
                 if (first_word == null && len == 1) {
                     first_word = new Word(first_string_word);
                 }
-                add_word_to_cache(first_string_word, first_word);
+                if (first_word != null) add_word_to_cache(first_string_word, first_word);
             } else {
                 if (first_word.length() == 0) {// if cache = ""
                     first_word = null;
@@ -105,7 +136,6 @@ public class WordSplitor {
         if (key == null) return null;
         Word word = null;
         if (reuse_words.containsKey(key)) {
-            System.out.print("*");
             word = reuse_words.get(key);
         }
         return word;

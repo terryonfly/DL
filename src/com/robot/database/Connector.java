@@ -3,6 +3,8 @@ package com.robot.database;
 import java.sql.*;
 import com.robot.split.model.*;
 
+import java.util.ArrayList;
+
 public class Connector {
     String driver = "com.mysql.jdbc.Driver";
     String url = "jdbc:mysql://robot.mokfc.com/corpus?Unicode=true&characterEncoding=UTF8";
@@ -83,6 +85,29 @@ public class Connector {
             return null;
         }
         return word;
+    }
+	
+    public ArrayList<Word> preload_words(String table, int page, int page_size) {
+        ArrayList<Word> words = new ArrayList<Word>();
+        try {
+            if(!is_connected() && !connect())
+                return words;
+            Statement statement = conn.createStatement();
+            String sql = "select * from " + table + " where " + table + ".id > " + page + " limit " + page_size + ";";
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()) {
+                String word_string = rs.getString("word");
+                String word_type = rs.getString("type");
+                double word_probability = rs.getDouble("probability");
+                Word word = new Word(word_string, word_type, word_probability);
+				words.add(word);
+            }
+            rs.close();
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+            return words;
+        }
+        return words;
     }
 
     public void feedback_word(Word a_word) {

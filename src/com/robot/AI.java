@@ -18,7 +18,7 @@ public class AI {
             String readed_string = reader.readLine();
             SentenceSplitor sentenceSplitor = new SentenceSplitor();
             WordSplitor wordSplitor = new WordSplitor();
-            while (readed_string.length() > 0) {
+            while (readed_string != null) {
                 ArrayList<String> string_sentences = sentenceSplitor.split_sentence(readed_string);
                 for (int i = 0; i < string_sentences.size(); i ++) {
                     String string_sentence = string_sentences.get(i);
