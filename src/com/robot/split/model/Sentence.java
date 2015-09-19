@@ -18,7 +18,8 @@ public class Sentence {
     }
 
     public void add_sentence(Sentence a_sentence) {
-        for (int i = 0; i < a_sentence.length(); i ++) {
+        int len = a_sentence.length();
+        for (int i = 0; i < len; i ++) {
             add_word(a_sentence.at(i));
         }
     }

@@ -56,7 +56,9 @@ public class WordSplitor {
         System.out.print("Proccessing : ");
         ArrayList<Sentence> sentences = get_posible_sentences(a_string_sentence);
         System.out.println();
+        System.out.println("Posible sentences count : " + sentences.size());
         Sentence best_sentence = choose_best_sentence(sentences);
+        sentences.clear();
         fb.feedback_sentence(best_sentence);
         return best_sentence;
     }
@@ -115,6 +117,7 @@ public class WordSplitor {
                         parent_sentence.add_sentence(sub_sentences.get(i));
                         sentences.add(parent_sentence);
                     }
+                    sub_sentences.clear();
                 }
             }
         }

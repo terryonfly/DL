@@ -80,6 +80,7 @@ public class Connector {
                 word = new Word(word_string, word_type, word_probability);
             }
             rs.close();
+            statement.close();
         } catch (SQLException e1) {
             e1.printStackTrace();
             return null;
@@ -103,6 +104,7 @@ public class Connector {
 				words.add(word);
             }
             rs.close();
+            statement.close();
         } catch (SQLException e1) {
             e1.printStackTrace();
             return words;
@@ -137,6 +139,7 @@ public class Connector {
                 }
             }
             rs.close();
+            statement.close();
         } catch (SQLException e1) {
             e1.printStackTrace();
             return;
