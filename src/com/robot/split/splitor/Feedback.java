@@ -4,8 +4,6 @@ import com.robot.database.Connector;
 import com.robot.split.model.Sentence;
 import com.robot.split.model.Word;
 
-import java.util.HashMap;
-
 /**
  * Created by terry on 15/9/19.
  */

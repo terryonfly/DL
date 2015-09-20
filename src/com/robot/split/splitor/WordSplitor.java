@@ -1,6 +1,7 @@
 package com.robot.split.splitor;
 
 import com.robot.database.Connector;
+import com.robot.split.cache.CorpusWords;
 import com.robot.split.model.Sentence;
 import com.robot.split.model.Word;
 
@@ -13,50 +14,20 @@ import java.util.HashMap;
 public class WordSplitor {
 
     Connector db;
-    HashMap<String, Word> reuse_words;
+    CorpusWords cache_words_unnormal;
+    CorpusWords cache_chars_unnormal;
     Feedback fb;
 
     public WordSplitor() {
         db = new Connector();
         db.connect();
-        reuse_words = new HashMap<String, Word>();
+        cache_words_unnormal = new CorpusWords("word_unnormal");
+        cache_chars_unnormal = new CorpusWords("char_unnormal");
         fb = new Feedback();
-		preload_words();
     }
 
-	public void preload_words() {
-		System.out.println("Starting preload...");
-		int page_i = 0;
-		int page_size = 3000;
-		boolean hasnext = true;
-		do {
-			System.out.println("load " + (page_i * page_size) + " page.");
-			ArrayList<Word> words = db.preload_words("word_sogou", page_i * page_size, page_size);
-			if (words.size() == 0)
-				hasnext = false;
-			for (int i = 0; i < words.size(); i ++) {
-				/*
-				if (words.get(i).get_word_type().equals("|")) {// if word_sogou has word and has no type
-                    Word pre_first_word = db.check_word(words.get(i).to_string(), "word_cn");
-                    if (pre_first_word != null) {
-						System.out.println("Fixed word type (" + (page_i * page_size + i) + ")");
-						add_word_to_cache(pre_first_word.to_string(), pre_first_word);
-						continue;
-                    }
-				}
-				*/
-				add_word_to_cache(words.get(i).to_string(), words.get(i));
-			}
-			page_i ++;
-		} while (hasnext);
-		System.out.println("Preload did finished");
-	}
-
     public Sentence split_word(String a_string_sentence) {
-//        System.out.print("Proccessing : ");
         ArrayList<Sentence> sentences = get_posible_sentences(a_string_sentence);
-//        System.out.println();
-//        System.out.println("Posible sentences count : " + sentences.size());
         Sentence best_sentence = choose_best_sentence(sentences);
         sentences.clear();
         fb.feedback_sentence(best_sentence);
@@ -68,40 +39,22 @@ public class WordSplitor {
         for (int len = (a_string_sentence.length() > 10) ? 10 : a_string_sentence.length(); len > 0; len --) {
             String first_string_word = a_string_sentence.substring(0, 0 + len);
             Word first_word = null;
-            if (first_word == null) {// if true
-                first_word = search_word_from_cache(first_string_word);
+            if (first_word == null) {
+                first_word = cache_words_unnormal.search_from_cache(first_string_word);
             }
-            if (first_word == null) {// if cache = null
-				/*
-                if (first_word == null) {
-                    first_word = db.check_word(first_string_word, "word_sogou");
-                }
-                if (first_word == null) {// if word_sogou = null
-                    first_word = db.check_word(first_string_word, "word_cn");
-                } else {
-                    if (first_word.get_word_type().equals("|")) {// if word_sogou has word and has no type
-                        //System.out.print("finding type : ");
-                        Word pre_first_word = db.check_word(first_string_word, "word_cn");
-                        if (pre_first_word != null) {
-                            //System.out.println("found");
-                            first_word = pre_first_word;
-                        } else {
-                            //System.out.println("not found");
-                        }
-                    }
-                }
-				*/
+            if (first_word == null) {
                 if (first_word == null && len == 1) {
-                    first_word = db.check_word(first_string_word, "char_cn");
+                    first_word = cache_chars_unnormal.search_from_cache(first_string_word);
+                    if (first_word != null) {
+                        double probability = first_word.get_word_probability();
+                        probability *= 0.1;
+                        first_word.set_word_probability(probability);
+                    }
                 }
                 if (first_word == null && len == 1) {
                     first_word = new Word(first_string_word);
                 }
-                if (first_word != null) add_word_to_cache(first_string_word, first_word);
-            } else {
-                if (first_word.length() == 0) {// if cache = ""
-                    first_word = null;
-                }
+                if (first_word != null) cache_words_unnormal.add_to_cache(first_string_word, first_word);
             }
             if (first_word != null) {
                 if (a_string_sentence.length() == len) {// Im the last word
@@ -122,26 +75,6 @@ public class WordSplitor {
             }
         }
         return sentences;
-    }
-
-    private void add_word_to_cache(String a_string_word, Word a_word) {
-        String key = a_string_word;
-        if (key == null) return;
-        Word value = a_word;
-        if (value == null) {
-            value = new Word("");
-        }
-        reuse_words.put(key, value);
-    }
-
-    private Word search_word_from_cache(String a_string_word) {
-        String key = a_string_word;
-        if (key == null) return null;
-        Word word = null;
-        if (reuse_words.containsKey(key)) {
-            word = reuse_words.get(key);
-        }
-        return word;
     }
 
     private Sentence choose_best_sentence(ArrayList<Sentence> sentences) {

@@ -32,4 +32,12 @@ public class Word {
     public String get_word_type() {
         return word_type;
     }
+
+    public double get_word_probability() {
+        return word_probability;
+    }
+
+    public void set_word_probability(double a_word_probability) {
+        word_probability = a_word_probability;
+    }
 }

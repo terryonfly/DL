@@ -66,7 +66,6 @@ public class Connector {
     public Word check_word(String check_word, String table) {
         Word word = null;
         try {
-//            System.out.print(".");
             if(!is_connected() && !connect())
                 return null;
             Statement statement = conn.createStatement();
@@ -87,7 +86,7 @@ public class Connector {
         return word;
     }
 	
-    public ArrayList<Word> preload_words(String table, int page, int page_size) {
+    public ArrayList<Word> pre_load_words(String table, int page, int page_size) {
         ArrayList<Word> words = new ArrayList<Word>();
         try {
             if(!is_connected() && !connect())
@@ -117,12 +116,13 @@ public class Connector {
                 return;
             Statement statement = conn.createStatement();
             String sql = "insert into `corpus`.`word` values(NULL, '" + a_word.to_string() + "', '" + a_word.get_word_type() + "', 1, 0.00000000000000000000001) on duplicate key update word.repeat = (word.repeat+1);";
-            System.out.print("Insert or Update " + a_word.to_string() + " ---- ");
             int res = statement.executeUpdate(sql);
-            if (res != -1) {
-                    System.out.println("Successed");
+            if (res == 1) {
+//                System.out.println("Inser or update successed");
+            } else if (res <= 0) {
+//                System.out.println("Inser or update failed");
             } else {
-                    System.out.println("Failed");
+//                System.out.println("Inser or update too many items : " + res);
             }
             statement.close();
         } catch (SQLException e1) {
@@ -131,22 +131,9 @@ public class Connector {
         }
     }
 
-    public void update_word(Word a_word, String table) {
-        try {
-            if(!is_connected() && !connect())
-                return;
-            Statement statement = conn.createStatement();
-            String sql = "update `corpus`.`" + table + "` set `type`='" + a_word.get_word_type() + "' where word = '" + a_word.to_string() + "' and type = '|' limit 1";
-            int res = statement.executeUpdate(sql);
-            if (res == 1) {
-                System.out.println("Successed");
-            } else {
-                System.out.println("Failed");
-            }
-            statement.close();
-        } catch (SQLException e1) {
-            e1.printStackTrace();
-            return;
-        }
+    @Override
+    protected void finalize() throws Throwable {
+        disconnect();
+        super.finalize();
     }
 }
