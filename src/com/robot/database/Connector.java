@@ -116,28 +116,33 @@ public class Connector {
             if(!is_connected() && !connect())
                 return;
             Statement statement = conn.createStatement();
-            String sql = "select * from word where word.word = '" + a_word.to_string() + "' limit 1;";
-            ResultSet rs = statement.executeQuery(sql);
-            if (rs.next()) {// Update
-                sql = "update word set word.repeat = (word.repeat+1) where word='" + a_word.to_string() + "' limit 1;";
-//                System.out.print("Update " + a_word.to_string() + " ---- ");
-                int res = statement.executeUpdate(sql);
-                if (res != -1) {
-//                    System.out.println("Successed");
-                } else {
-//                    System.out.println("Failed");
-                }
-            } else {// Insert
-                sql = "insert into `corpus`.`word` values(NULL, '" + a_word.to_string() + "', '" + a_word.get_word_type() + "', 1, 0.00000000000000000000001);";
-//                System.out.print("Insert " + a_word.to_string() + " ---- ");
-                int res = statement.executeUpdate(sql);
-                if (res != -1) {
-//                    System.out.println("Successed");
-                } else {
-//                    System.out.println("Failed");
-                }
+            String sql = "insert into `corpus`.`word` values(NULL, '" + a_word.to_string() + "', '" + a_word.get_word_type() + "', 1, 0.00000000000000000000001) on duplicate key update word.repeat = (word.repeat+1);";
+            System.out.print("Insert or Update " + a_word.to_string() + " ---- ");
+            int res = statement.executeUpdate(sql);
+            if (res != -1) {
+                    System.out.println("Successed");
+            } else {
+                    System.out.println("Failed");
             }
-            rs.close();
+            statement.close();
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+            return;
+        }
+    }
+
+    public void update_word(Word a_word, String table) {
+        try {
+            if(!is_connected() && !connect())
+                return;
+            Statement statement = conn.createStatement();
+            String sql = "update `corpus`.`" + table + "` set `type`='" + a_word.get_word_type() + "' where word = '" + a_word.to_string() + "' and type = '|' limit 1";
+            int res = statement.executeUpdate(sql);
+            if (res == 1) {
+                System.out.println("Successed");
+            } else {
+                System.out.println("Failed");
+            }
             statement.close();
         } catch (SQLException e1) {
             e1.printStackTrace();
