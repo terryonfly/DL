@@ -27,10 +27,10 @@ public class AI {
                 ArrayList<String> string_sentences = sentenceSplitor.split_sentence(readed_string);
                 for (int i = 0; i < string_sentences.size(); i++) {
                     String string_sentence = string_sentences.get(i);
-                    if (string_sentence.length() > 30)
+                    if (string_sentence.length() > 35)
                         continue;
                     Sentence sentence = wordSplitor.split_word(string_sentence);
-                    System.out.println(line_index + " [" + String.format("%.3f", (line_index / 672.48)) + "%] - " + sentence.to_string());
+                    System.out.println(line_index + " [" + String.format("%.3f", (line_index / 672.47)) + "%] - " + sentence.to_string());
                 }
                 readed_string = reader.readLine();
                 line_index ++;

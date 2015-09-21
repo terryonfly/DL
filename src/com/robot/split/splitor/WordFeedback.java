@@ -11,18 +11,33 @@ import java.util.Map.Entry;
 /**
  * Created by terry on 15/9/19.
  */
-public class Feedback implements Runnable {
+public class WordFeedback implements Runnable {
 
+    Thread thread;
+    String thread_name;
+    public boolean is_run;
     Connector db;
     HashMap<String, Word> uncommit_words;
-    String thread_name;
-    public boolean is_run = true;
 
-    public Feedback(String a_thread_name) {
+    public WordFeedback(String a_thread_name) {
         thread_name = a_thread_name;
+        is_run = false;
         db = new Connector();
         db.connect();
         uncommit_words = new HashMap<String, Word>();
+    }
+
+    public void start() {
+        if (is_run) return;
+        thread = new Thread(this);
+        is_run = true;
+        thread.start();
+    }
+
+    public void stop() {
+        if (!is_run) return;
+        is_run = false;
+        thread = null;
     }
 
     @Override

@@ -118,11 +118,32 @@ public class Connector {
             String sql = "insert into `corpus`.`word` values(NULL, '" + a_word.to_string() + "', '" + a_word.get_word_type() + "', " + a_word.uncommit_feedback_times + ", 0.00000000000000000000001) on duplicate key update word.repeat = (word.repeat+" + a_word.uncommit_feedback_times + ");";
             int res = statement.executeUpdate(sql);
             if (res > 0) {
-//                System.out.println("Inser or update successed : " + res);
+//                System.out.println("Inser or update word successed : " + res);
             } else if (res <= 0) {
-//                System.out.println("Inser or update failed");
+//                System.out.println("Inser or update word failed");
             } else {
-//                System.out.println("Inser or update too many items : " + res);
+//                System.out.println("Inser or update word too many items : " + res);
+            }
+            statement.close();
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+            return;
+        }
+    }
+
+    public void feedback_phrase(Phrase a_phrase) {
+        try {
+            if(!is_connected() && !connect())
+                return;
+            Statement statement = conn.createStatement();
+            String sql = "insert into `corpus`.`phrase` values(NULL, '" + a_phrase.to_string() + "', " + a_phrase.uncommit_feedback_times + ", 0.00000000000000000000001) on duplicate key update phrase.repeat = (phrase.repeat+" + a_phrase.uncommit_feedback_times + ");";
+            int res = statement.executeUpdate(sql);
+            if (res > 0) {
+//                System.out.println("Inser or update phrase successed : " + res);
+            } else if (res <= 0) {
+//                System.out.println("Inser or update phrase failed");
+            } else {
+//                System.out.println("Inser or update phrase too many items : " + res);
             }
             statement.close();
         } catch (SQLException e1) {

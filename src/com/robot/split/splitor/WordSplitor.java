@@ -6,7 +6,6 @@ import com.robot.split.model.Sentence;
 import com.robot.split.model.Word;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by terry on 15/9/18.
@@ -16,17 +15,18 @@ public class WordSplitor {
     Connector db;
     CorpusWords cache_words_unnormal;
     CorpusWords cache_chars_unnormal;
-    Feedback fb;
-    Thread fbt;
+    WordFeedback wordFeedback;
+    PhraseFeedback phraseFeedback;
 
     public WordSplitor() {
         db = new Connector();
         db.connect();
         cache_words_unnormal = new CorpusWords("word_unnormal");
         cache_chars_unnormal = new CorpusWords("char_unnormal");
-        fb = new Feedback("Feedback Thread");
-        fbt = new Thread(fb);
-        fbt.start();
+        wordFeedback = new WordFeedback("Word Feedback");
+        phraseFeedback = new PhraseFeedback("Phrase Feedback");
+        wordFeedback.start();
+        phraseFeedback.start();
     }
 
     public Sentence split_word(String a_string_sentence) {
@@ -35,7 +35,8 @@ public class WordSplitor {
 //        System.out.println("Posible count : " + sentences.size());
         Sentence best_sentence = choose_best_sentence(sentences);
         sentences.clear();
-        fb.feedback_sentence(best_sentence);
+        wordFeedback.feedback_sentence(best_sentence);
+        phraseFeedback.feedback_sentence(best_sentence);
         return best_sentence;
     }
 
@@ -99,7 +100,8 @@ public class WordSplitor {
 
     @Override
     protected void finalize() throws Throwable {
-        fb.is_run = false;
+        wordFeedback.stop();
+        phraseFeedback.stop();
         super.finalize();
     }
 }
