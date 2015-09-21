@@ -20,9 +20,10 @@ public class Phrase {
         word_B_string = a_word_B.to_string();
     }
 
-    public Phrase(String a_word_A_string, String a_word_B_string, double a_phrase_probability) {
-        word_A_string = a_word_A_string;
-        word_B_string = a_word_B_string;
+    public Phrase(String a_phrase_string, double a_phrase_probability) {
+        String[] words = a_phrase_string.split("-");
+        word_A_string = words[0];
+        word_B_string = words[1];
         phrase_probability = a_phrase_probability;
     }
 

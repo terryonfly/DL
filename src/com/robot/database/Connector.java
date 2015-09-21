@@ -110,6 +110,29 @@ public class Connector {
         return words;
     }
 
+    public ArrayList<Phrase> pre_load_phrases(String table, int page, int page_size) {
+        ArrayList<Phrase> phrases = new ArrayList<Phrase>();
+        try {
+            if(!is_connected() && !connect())
+                return phrases;
+            Statement statement = conn.createStatement();
+            String sql = "select * from " + table + " where " + table + ".id > " + page + " limit " + page_size + ";";
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()) {
+                String phrase_string = rs.getString("phrase");
+                double phrase_probability = rs.getDouble("probability");
+                Phrase phrase = new Phrase(phrase_string, phrase_probability);
+                phrases.add(phrase);
+            }
+            rs.close();
+            statement.close();
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+            return phrases;
+        }
+        return phrases;
+    }
+
     public void feedback_word(Word a_word) {
         try {
             if(!is_connected() && !connect())

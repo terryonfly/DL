@@ -2,6 +2,7 @@ package com.robot.split.splitor;
 
 import com.robot.database.Connector;
 import com.robot.split.cache.CorpusWords;
+import com.robot.split.cache.CorpusPhrase;
 import com.robot.split.model.Sentence;
 import com.robot.split.model.Word;
 
@@ -15,6 +16,7 @@ public class WordSplitor {
     Connector db;
     CorpusWords cache_words_unnormal;
     CorpusWords cache_chars_unnormal;
+    CorpusPhrase cache_phrase_unnormal;
     WordFeedback wordFeedback;
     PhraseFeedback phraseFeedback;
 
