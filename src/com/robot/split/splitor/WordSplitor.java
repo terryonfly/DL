@@ -17,17 +17,22 @@ public class WordSplitor {
     CorpusWords cache_words_unnormal;
     CorpusWords cache_chars_unnormal;
     Feedback fb;
+    Thread fbt;
 
     public WordSplitor() {
         db = new Connector();
         db.connect();
         cache_words_unnormal = new CorpusWords("word_unnormal");
         cache_chars_unnormal = new CorpusWords("char_unnormal");
-        fb = new Feedback();
+        fb = new Feedback("Feedback Thread");
+        fbt = new Thread(fb);
+        fbt.start();
     }
 
     public Sentence split_word(String a_string_sentence) {
+//        System.out.println("Checking : " + a_string_sentence);
         ArrayList<Sentence> sentences = get_posible_sentences(a_string_sentence);
+//        System.out.println("Posible count : " + sentences.size());
         Sentence best_sentence = choose_best_sentence(sentences);
         sentences.clear();
         fb.feedback_sentence(best_sentence);
@@ -90,5 +95,11 @@ public class WordSplitor {
             }
         }
         return best_sentence;
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        fb.is_run = false;
+        super.finalize();
     }
 }

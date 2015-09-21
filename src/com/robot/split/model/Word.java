@@ -9,6 +9,7 @@ public class Word {
     String word_type = "";
     double word_probability = 0.0;
     boolean is_new_word = true;
+    public int uncommit_feedback_times = 0;
 
     public Word(String a_new_word) {
         word_string = a_new_word;

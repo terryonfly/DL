@@ -115,10 +115,10 @@ public class Connector {
             if(!is_connected() && !connect())
                 return;
             Statement statement = conn.createStatement();
-            String sql = "insert into `corpus`.`word` values(NULL, '" + a_word.to_string() + "', '" + a_word.get_word_type() + "', 1, 0.00000000000000000000001) on duplicate key update word.repeat = (word.repeat+1);";
+            String sql = "insert into `corpus`.`word` values(NULL, '" + a_word.to_string() + "', '" + a_word.get_word_type() + "', " + a_word.uncommit_feedback_times + ", 0.00000000000000000000001) on duplicate key update word.repeat = (word.repeat+" + a_word.uncommit_feedback_times + ");";
             int res = statement.executeUpdate(sql);
-            if (res == 1) {
-//                System.out.println("Inser or update successed");
+            if (res > 0) {
+//                System.out.println("Inser or update successed : " + res);
             } else if (res <= 0) {
 //                System.out.println("Inser or update failed");
             } else {
