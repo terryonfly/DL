@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Connector {
     String driver = "com.mysql.jdbc.Driver";
-    String url = "jdbc:mysql://192.168.0.168/corpus?Unicode=true&characterEncoding=UTF8";
+    String url = "jdbc:mysql://localhost/corpus?Unicode=true&characterEncoding=UTF8";
     String user = "root";
     String password = "513939";
 

@@ -17,6 +17,7 @@ public class AI {
 
     public static void main(String[] args) {
         System.out.println("\n===== Begin =====\n");
+//        /*
         try {
             BufferedReader reader = new BufferedReader(new FileReader("data.txt"));
             String readed_string = reader.readLine();
@@ -40,6 +41,7 @@ public class AI {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //*/
         System.out.println("\n====== End ======\n");
     }
 }
