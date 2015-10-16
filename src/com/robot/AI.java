@@ -17,7 +17,17 @@ public class AI {
 
     public static void main(String[] args) {
         System.out.println("\n===== Begin =====\n");
-//        /*
+        int i = 0;
+        while (true) {
+            System.out.print(i + "\r");
+            i ++;
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        /*
         try {
             BufferedReader reader = new BufferedReader(new FileReader("data.txt"));
             String readed_string = reader.readLine();
@@ -41,7 +51,7 @@ public class AI {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //*/
         System.out.println("\n====== End ======\n");
+        //*/
     }
 }
