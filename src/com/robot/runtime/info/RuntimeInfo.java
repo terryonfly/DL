@@ -22,7 +22,7 @@ public class RuntimeInfo {
     }
 
     public void print_runtime_info() {
-        System.out.print("running[" + String.format("%.3f", running_persent) + "%] word[" + String.format("%6d", uncommit_word_count) + "] phrase[" + String.format("%6d", uncommit_phrase_count) + "]\r");
+        System.out.print("running[" + String.format("%.3f", running_persent) + "%] word[" + String.format("%7d", uncommit_word_count) + "] phrase[" + String.format("%7d", uncommit_phrase_count) + "]\r");
     }
 
     public void update_running_persent(float a_running_persent) {
