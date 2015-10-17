@@ -1,5 +1,6 @@
 package com.robot;
 
+import com.robot.runtime.info.RuntimeInfo;
 import com.robot.split.model.Sentence;
 import com.robot.split.splitor.SentenceSplitor;
 import com.robot.split.splitor.WordSplitor;
@@ -17,17 +18,7 @@ public class AI {
 
     public static void main(String[] args) {
         System.out.println("\n===== Begin =====\n");
-        int i = 0;
-        while (true) {
-            System.out.print(i + "\r");
-            i ++;
-            try {
-                Thread.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        /*
+//        /*
         try {
             BufferedReader reader = new BufferedReader(new FileReader("data.txt"));
             String readed_string = reader.readLine();
@@ -41,7 +32,8 @@ public class AI {
                     if (string_sentence.length() > 35)
                         continue;
                     Sentence sentence = wordSplitor.split_word(string_sentence);
-                    System.out.println(line_index + " [" + String.format("%.3f", (line_index / 672.47)) + "%] - " + sentence.to_string());
+                    RuntimeInfo.getInstance().update_running_persent((float)(line_index / 672.47));
+//                    System.out.println(line_index + " [" + String.format("%.3f", (line_index / 672.47)) + "%] - " + sentence.to_string());
                 }
                 readed_string = reader.readLine();
                 line_index ++;

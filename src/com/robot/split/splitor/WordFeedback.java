@@ -1,6 +1,7 @@
 package com.robot.split.splitor;
 
 import com.robot.database.Connector;
+import com.robot.runtime.info.RuntimeInfo;
 import com.robot.split.model.Sentence;
 import com.robot.split.model.Word;
 
@@ -44,9 +45,11 @@ public class WordFeedback implements Runnable {
     public void run() {
         while (is_run) {
             if (feedback_word()) {
-                System.out.println(thread_name + " : [ OK uncommit words : " + uncommit_words.size() + " ]");
+                RuntimeInfo.getInstance().update_uncommit_word_count(uncommit_words.size());
+//                System.out.print(thread_name + " : [ OK uncommit words : " + uncommit_words.size() + " ]\r");
             } else {
-                System.out.println(thread_name + " : [ Empty uncommit words ]");
+                RuntimeInfo.getInstance().update_uncommit_word_count(uncommit_words.size());
+//                System.out.print(thread_name + " : [ Empty uncommit words ]\r");
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {

@@ -1,6 +1,7 @@
 package com.robot.split.splitor;
 
 import com.robot.database.Connector;
+import com.robot.runtime.info.RuntimeInfo;
 import com.robot.split.model.Sentence;
 import com.robot.split.model.Word;
 import com.robot.split.model.Phrase;
@@ -45,9 +46,11 @@ public class PhraseFeedback implements Runnable {
     public void run() {
         while (is_run) {
             if (feedback_phrase()) {
-                System.out.println(thread_name + " : [ OK uncommit phrases : " + uncommit_phrases.size() + " ]");
+                RuntimeInfo.getInstance().update_uncommit_phrase_count(uncommit_phrases.size());
+                //System.out.println(thread_name + " : [ OK uncommit phrases : " + uncommit_phrases.size() + " ]");
             } else {
-                System.out.println(thread_name + " : [ Empty uncommit phrases ]");
+                RuntimeInfo.getInstance().update_uncommit_phrase_count(uncommit_phrases.size());
+                //System.out.println(thread_name + " : [ Empty uncommit phrases ]");
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
