@@ -7,7 +7,8 @@ import java.util.ArrayList;
 
 public class Connector {
     String driver = "com.mysql.jdbc.Driver";
-    String url = "jdbc:mysql://localhost/corpus?Unicode=true&characterEncoding=UTF8";
+//    String url = "jdbc:mysql://localhost/corpus?Unicode=true&characterEncoding=UTF8";
+    String url = "jdbc:mysql://robot.mokfc.com/corpus?Unicode=true&characterEncoding=UTF8";
     String user = "root";
     String password = "513939";
 
@@ -168,6 +169,61 @@ public class Connector {
             } else {
 //                System.out.println("Inser or update phrase too many items : " + res);
             }
+            statement.close();
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+            return;
+        }
+    }
+
+    public void add_url(String a_url) {
+        if (a_url.length() > 250) {
+            System.err.printf("New url's length > 250 and pass\n");
+            return;
+        }
+        try {
+            if(!is_connected() && !connect())
+                return;
+            Statement statement = conn.createStatement();
+            String sql = "insert into `corpus`.`urls` values(NULL, '" + a_url + "', 0) on duplicate key update urls.getted = urls.getted;";
+            statement.executeUpdate(sql);
+            statement.close();
+        } catch (SQLException e1) {
+            System.out.printf("add_url err : %s\n", e1);
+//            e1.printStackTrace();
+            return;
+        }
+    }
+
+    public String get_url() {
+        String url = "";
+        try {
+            if(!is_connected() && !connect())
+                return url;
+            Statement statement = conn.createStatement();
+            String sql = "select * from urls where urls.getted = 0 limit 1;";
+            ResultSet rs = statement.executeQuery(sql);
+            if (rs.next()) {
+                int url_id = rs.getInt("id");
+                url = rs.getString("url");
+                set_url_getted(url_id);
+            }
+            rs.close();
+            statement.close();
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+            return url;
+        }
+        return url;
+    }
+
+    public void set_url_getted(int a_url_id) {
+        try {
+            if(!is_connected() && !connect())
+                return;
+            Statement statement = conn.createStatement();
+            String sql = "update corpus.urls set getted=1 where id=" + a_url_id + ";";
+            statement.executeUpdate(sql);
             statement.close();
         } catch (SQLException e1) {
             e1.printStackTrace();
