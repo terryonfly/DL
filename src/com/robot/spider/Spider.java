@@ -60,15 +60,15 @@ public class Spider implements Runnable {
                     // Content Data
                     ArrayList<String> content_datas = pageAnalyzer.getContentDatas();
                     for (int i = 0; i < content_datas.size(); i ++) {
-//                        ArrayList<String> string_sentences = sentenceSplitor.split_sentence(content_datas.get(i));
-//                        for (int k = 0; k < string_sentences.size(); k++) {
-//                            String string_sentence = string_sentences.get(k);
-//                            if (string_sentence.length() > 35)
-//                                continue;
-//                            Sentence sentence = wordSplitor.split_word(string_sentence);
-//                            RuntimeInfo.getInstance().update_running_persent(0);
-//                            RuntimeInfo.getInstance().update_running_sentence(sentence.to_string());
-//                        }
+                        ArrayList<String> string_sentences = sentenceSplitor.split_sentence(content_datas.get(i));
+                        for (int k = 0; k < string_sentences.size(); k++) {
+                            String string_sentence = string_sentences.get(k);
+                            if (string_sentence.length() > 35)
+                                continue;
+                            Sentence sentence = wordSplitor.split_word(string_sentence);
+                            RuntimeInfo.getInstance().update_running_persent(0);
+                            RuntimeInfo.getInstance().update_running_sentence(sentence.to_string());
+                        }
                     }
                 } else {
                     Thread.sleep(1000);
