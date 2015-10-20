@@ -14,16 +14,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-import com.robot.spider.WebLoader;
-import org.htmlparser.Node;
-import org.htmlparser.NodeFilter;
-import org.htmlparser.Parser;
-import org.htmlparser.filters.NodeClassFilter;
-import org.htmlparser.filters.TagNameFilter;
-import org.htmlparser.tags.LinkTag;
-import org.htmlparser.tags.TitleTag;
-import org.htmlparser.util.NodeList;
-
 /**
  * Created by terry on 15/9/18.
  */
