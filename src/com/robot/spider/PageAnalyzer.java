@@ -47,7 +47,7 @@ public class PageAnalyzer {
             }
         } catch (ParserException e) {
             System.out.printf("getLinks err : %s\n", e);
-            e.printStackTrace();
+//            e.printStackTrace();
             return urls;
         }
         return urls;
@@ -80,7 +80,7 @@ public class PageAnalyzer {
             }
         } catch (ParserException e) {
             System.out.printf("getContentDatas err : %s\n", e);
-            e.printStackTrace();
+//            e.printStackTrace();
             return content_datas;
         }
         return content_datas;
