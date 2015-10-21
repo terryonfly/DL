@@ -26,7 +26,7 @@ public class RuntimeInfo {
     }
 
     public void print_runtime_info() {
-        System.out.print("running[" + String.format("%6d", running_page_count) + "%] word[" + String.format("%7d", uncommit_word_count) + "] phrase[" + String.format("%7d", uncommit_phrase_count) + "] url[" + String.format("%5d", uncommit_url_count) + "] " + String.format("%s", running_sentence) + "\r");
+        System.out.print("pages[" + String.format("%6d", running_page_count) + "] word[" + String.format("%7d", uncommit_word_count) + "] phrase[" + String.format("%7d", uncommit_phrase_count) + "] url[" + String.format("%5d", uncommit_url_count) + "] " + String.format("%s", running_sentence) + "\r");
     }
 
     public void update_running_page_count(int a_running_page_count) {
