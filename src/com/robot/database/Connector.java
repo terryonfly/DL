@@ -9,8 +9,8 @@ import java.util.ArrayList;
 
 public class Connector {
     String driver = "com.mysql.jdbc.Driver";
-    String url = "jdbc:mysql://localhost/corpus?Unicode=true&characterEncoding=UTF8";
-//    String url = "jdbc:mysql://robot.mokfc.com/corpus?Unicode=true&characterEncoding=UTF8";
+//    String url = "jdbc:mysql://localhost/corpus?Unicode=true&characterEncoding=UTF8";
+    String url = "jdbc:mysql://robot.mokfc.com/corpus?Unicode=true&characterEncoding=UTF8";
     String user = "root";
     String password = "513939";
 
@@ -191,7 +191,7 @@ public class Connector {
             statement.executeUpdate(sql);
             statement.close();
         } catch (SQLException e1) {
-            System.out.printf("add_url err : %s\n", e1);
+            System.err.printf("add_url err : %s\n", e1);
 //            e1.printStackTrace();
             return;
         }
@@ -203,7 +203,7 @@ public class Connector {
             if(!is_connected() && !connect())
                 return url;
             Statement statement = conn.createStatement();
-            String sql = "select * from urls where urls.getted = 0 limit 1;";
+            String sql = "select * from urls where urls.getted = 0 order by rand() limit 1;";
             ResultSet rs = statement.executeQuery(sql);
             if (rs.next()) {
                 int url_id = rs.getInt("id");
@@ -226,6 +226,58 @@ public class Connector {
                 return;
             Statement statement = conn.createStatement();
             String sql = "update corpus.urls set getted=1 where id=" + a_url_id + ";";
+            statement.executeUpdate(sql);
+            statement.close();
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+            return;
+        }
+    }
+
+    public void add_web_content(String a_web_content) {
+        try {
+            if(!is_connected() && !connect())
+                return;
+            a_web_content = a_web_content.replaceAll("'", "\\'");
+            Statement statement = conn.createStatement();
+            String sql = "insert into `corpus`.`web_content` values (NULL, '" + a_web_content + "', 0);";
+            statement.executeUpdate(sql);
+            statement.close();
+        } catch (SQLException e1) {
+            System.err.printf("add_web_content err : %s\n", e1);
+//            e1.printStackTrace();
+            return;
+        }
+    }
+
+    public String get_web_content() {
+        String web_content = "";
+        try {
+            if(!is_connected() && !connect())
+                return web_content;
+            Statement statement = conn.createStatement();
+            String sql = "select * from web_content where web_content.has_split = 0 limit 1;";
+            ResultSet rs = statement.executeQuery(sql);
+            if (rs.next()) {
+                int web_content_id = rs.getInt("id");
+                web_content = rs.getString("web_content");
+                set_web_content_getted(web_content_id);
+            }
+            rs.close();
+            statement.close();
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+            return web_content;
+        }
+        return web_content;
+    }
+
+    public void set_web_content_getted(int a_web_content_id) {
+        try {
+            if(!is_connected() && !connect())
+                return;
+            Statement statement = conn.createStatement();
+            String sql = "update corpus.web_content set has_split=1 where id=" + a_web_content_id + ";";
             statement.executeUpdate(sql);
             statement.close();
         } catch (SQLException e1) {

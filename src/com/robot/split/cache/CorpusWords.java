@@ -20,6 +20,7 @@ public class CorpusWords {
         table = a_table;
         cache_words = new HashMap<String, Word>();
         pre_loading();
+        db.disconnect();
     }
 
     public void pre_loading() {
