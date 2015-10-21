@@ -31,6 +31,21 @@ public class WordSplitor {
         phraseFeedback.start();
     }
 
+    public boolean isMessyCode(String a_string_sentence) {
+        if (a_string_sentence.length() == 0) return false;
+        float messy_count = 0;
+        for (int i = 0; i < a_string_sentence.length(); i ++) {
+            String string_word = a_string_sentence.substring(i, i + 1);
+            Word word = cache_chars_unnormal.search_from_cache(string_word);
+            messy_count += (word == null) ? 1 : 0;
+        }
+        if (messy_count / (float)a_string_sentence.length() > 0.4) {
+//            System.err.printf("%s\n", a_string_sentence);
+            return true;
+        }
+        return false;
+    }
+
     public Sentence split_word(String a_string_sentence) {
 //        System.out.println("Checking : " + a_string_sentence);
         ArrayList<Sentence> sentences = get_posible_sentences(a_string_sentence);

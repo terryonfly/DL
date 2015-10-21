@@ -7,6 +7,8 @@ import com.robot.split.splitor.SentenceSplitor;
 import com.robot.split.splitor.WordSplitor;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by terry on 15/10/21.
@@ -43,33 +45,32 @@ public class Spider implements Runnable {
 
     @Override
     public void run() {
-
         SentenceSplitor sentenceSplitor = new SentenceSplitor();
         WordSplitor wordSplitor = new WordSplitor();
         try {
-            WebLoader webLoader = new WebLoader();
-            PageAnalyzer pageAnalyzer = new PageAnalyzer(webLoader);
+            PageAnalyzer pageAnalyzer = new PageAnalyzer();
             while (is_run) {
                 String target_url = urlQueue.get_one_url();
                 if (target_url.length() > 0) {
-                    String html = webLoader.getHtml(target_url);
-                    if (html.length() == 0) continue;
-                    pageAnalyzer.setHTML(html);
-                    // Links
-                    urlQueue.add_urls(pageAnalyzer.getLinks());
+                    System.out.printf("%s\n", target_url);
+                    pageAnalyzer.set_taget_url(target_url);
                     // Content Data
                     ArrayList<String> content_datas = pageAnalyzer.getContentDatas();
                     for (int i = 0; i < content_datas.size(); i ++) {
-                        ArrayList<String> string_sentences = sentenceSplitor.split_sentence(content_datas.get(i));
-                        for (int k = 0; k < string_sentences.size(); k++) {
-                            String string_sentence = string_sentences.get(k);
-                            if (string_sentence.length() > 35)
-                                continue;
-                            Sentence sentence = wordSplitor.split_word(string_sentence);
-                            RuntimeInfo.getInstance().update_running_persent(0);
-                            RuntimeInfo.getInstance().update_running_sentence(sentence.to_string());
-                        }
+                            ArrayList<String> string_sentences = sentenceSplitor.split_sentence(content_datas.get(i));
+                            for (int k = 0; k < string_sentences.size(); k++) {
+                                String string_sentence = string_sentences.get(k);
+                                if (string_sentence.length() > 35 || string_sentence.length() == 0)
+                                    continue;
+                                if (!wordSplitor.isMessyCode(string_sentence)) {
+                                    Sentence sentence = wordSplitor.split_word(string_sentence);
+//                                    RuntimeInfo.getInstance().update_running_sentence(sentence.to_string());
+                                    System.out.printf("%s\n", sentence.to_string());
+                                }
+                            }
                     }
+                    // Links
+                    urlQueue.add_urls(pageAnalyzer.getLinks());
                 } else {
                     Thread.sleep(1000);
                 }

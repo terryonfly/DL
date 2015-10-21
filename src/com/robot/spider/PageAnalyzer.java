@@ -8,33 +8,48 @@ import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 
 import java.util.ArrayList;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by terry on 15/10/20.
  */
 public class PageAnalyzer {
 
-    String html;
-    Parser parser;
-    WebLoader webLoader;
+    String url;
 
-    public PageAnalyzer(WebLoader a_webLoader) {
-        parser = new Parser();
-        webLoader = a_webLoader;
+    public PageAnalyzer() {
+
     }
 
-    public void setHTML(String a_html) {
-        html = a_html;
+    public void set_taget_url(String a_url) {
+        url = a_url;
+    }
+
+    public ArrayList<String> getContentDatas() {
+        ArrayList<String> content_datas = new ArrayList<String>();
+        try {
+            Parser parser = new Parser();
+            parser.setResource(url);
+            NodeList contentList = parser.parse(null);
+            for (int i = 0; i < contentList.size(); i ++) {
+                Node node = contentList.elementAt(i);
+                String content_data = node.toPlainTextString();
+                if (content_data != null && content_data.length() > 0) {
+                    content_datas.add(content_data);
+                }
+            }
+        } catch (ParserException e) {
+            System.err.printf("getContentDatas err : %s\n", e);
+//            e.printStackTrace();
+            return content_datas;
+        }
+        return content_datas;
     }
 
     public ArrayList<String> getLinks() {
         ArrayList<String> urls = new ArrayList<String>();
         try {
-            parser.setResource(html);
+            Parser parser = new Parser();
+            parser.setResource(url);
             NodeClassFilter linkFilter = new NodeClassFilter(LinkTag.class);
             NodeList linkList = parser.parse(linkFilter);
             for (int i = 0; i < linkList.size(); i ++) {
@@ -46,7 +61,7 @@ public class PageAnalyzer {
                 }
             }
         } catch (ParserException e) {
-            System.out.printf("getLinks err : %s\n", e);
+            System.err.printf("getLinks err : %s\n", e);
 //            e.printStackTrace();
             return urls;
         }
@@ -64,25 +79,5 @@ public class PageAnalyzer {
                 + "(:[0-9]{1,4})?"
                 + "((/?)|"
                 + "(/[0-9a-z_!~*'().;?:@&=+$,%#-]+)+/?)$");
-    }
-
-    public ArrayList<String> getContentDatas() {
-        ArrayList<String> content_datas = new ArrayList<String>();
-        try {
-            parser.setResource(html);
-            NodeList contentList = parser.parse(null);
-            for (int i = 0; i < contentList.size(); i ++) {
-                Node node = contentList.elementAt(i);
-                String content_data = node.toPlainTextString();
-                if (content_data != null && content_data.length() > 0) {
-                    content_datas.add(content_data);
-                }
-            }
-        } catch (ParserException e) {
-            System.out.printf("getContentDatas err : %s\n", e);
-//            e.printStackTrace();
-            return content_datas;
-        }
-        return content_datas;
     }
 }

@@ -6,7 +6,7 @@ package com.robot.runtime.info;
 //饿汉式单例类.在类初始化时，已经自行实例化
 public class RuntimeInfo {
 
-    private float running_persent = 0;
+    private float running_page_count = 0;
 
     private int uncommit_word_count = 0;
 
@@ -26,11 +26,11 @@ public class RuntimeInfo {
     }
 
     public void print_runtime_info() {
-        System.out.print("running[" + String.format("%.3f", running_persent) + "%] word[" + String.format("%7d", uncommit_word_count) + "] phrase[" + String.format("%7d", uncommit_phrase_count) + "] url[" + String.format("%5d", uncommit_url_count) + "] " + String.format("%40s", running_sentence) + "\r");
+        System.out.print("running[" + String.format("%6d", running_page_count) + "%] word[" + String.format("%7d", uncommit_word_count) + "] phrase[" + String.format("%7d", uncommit_phrase_count) + "] url[" + String.format("%5d", uncommit_url_count) + "] " + String.format("%s", running_sentence) + "\r");
     }
 
-    public void update_running_persent(float a_running_persent) {
-        running_persent = a_running_persent;
+    public void update_running_page_count(float a_running_page_count) {
+        running_page_count = a_running_page_count;
         print_runtime_info();
     }
 

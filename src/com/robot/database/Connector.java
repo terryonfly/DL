@@ -1,6 +1,8 @@
 package com.robot.database;
 
 import java.sql.*;
+
+import com.robot.runtime.info.RuntimeInfo;
 import com.robot.split.model.*;
 
 import java.util.ArrayList;
@@ -218,6 +220,7 @@ public class Connector {
     }
 
     public void set_url_getted(int a_url_id) {
+        RuntimeInfo.getInstance().update_running_page_count(a_url_id);
         try {
             if(!is_connected() && !connect())
                 return;
