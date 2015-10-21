@@ -7,8 +7,6 @@ import com.robot.split.splitor.SentenceSplitor;
 import com.robot.split.splitor.WordSplitor;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by terry on 15/10/21.

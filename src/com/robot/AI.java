@@ -19,32 +19,32 @@ import java.util.HashMap;
  */
 public class AI {
 
-    public static void parse_content() {
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader("data.txt"));
-            String readed_string = reader.readLine();
-            SentenceSplitor sentenceSplitor = new SentenceSplitor();
-            WordSplitor wordSplitor = new WordSplitor();
-            int line_index = 0;
-            while (readed_string != null) {
-                ArrayList<String> string_sentences = sentenceSplitor.split_sentence(readed_string);
-                for (int i = 0; i < string_sentences.size(); i++) {
-                    String string_sentence = string_sentences.get(i);
-                    if (string_sentence.length() > 35)
-                        continue;
-                    Sentence sentence = wordSplitor.split_word(string_sentence);
-                    RuntimeInfo.getInstance().update_running_persent((float)(line_index / 672.47));
-//                    System.out.println(line_index + " [" + String.format("%.3f", (line_index / 672.47)) + "%] - " + sentence.to_string());
-                }
-                readed_string = reader.readLine();
-                line_index ++;
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    public static void parse_content() {
+//        try {
+//            BufferedReader reader = new BufferedReader(new FileReader("data.txt"));
+//            String readed_string = reader.readLine();
+//            SentenceSplitor sentenceSplitor = new SentenceSplitor();
+//            WordSplitor wordSplitor = new WordSplitor();
+//            int line_index = 0;
+//            while (readed_string != null) {
+//                ArrayList<String> string_sentences = sentenceSplitor.split_sentence(readed_string);
+//                for (int i = 0; i < string_sentences.size(); i++) {
+//                    String string_sentence = string_sentences.get(i);
+//                    if (string_sentence.length() > 35)
+//                        continue;
+//                    Sentence sentence = wordSplitor.split_word(string_sentence);
+//                    RuntimeInfo.getInstance().update_running_persent((float)(line_index / 672.47));
+////                    System.out.println(line_index + " [" + String.format("%.3f", (line_index / 672.47)) + "%] - " + sentence.to_string());
+//                }
+//                readed_string = reader.readLine();
+//                line_index ++;
+//            }
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public static void main(String[] args) throws Exception {
         System.out.println("\n===== Begin =====\n");
