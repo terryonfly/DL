@@ -90,7 +90,8 @@ public class URLQueue implements Runnable {
             if (uncommit_urls.size() < 100) {
                 while (uncommit_urls.size() < 1000) {
                     String url = urlCache.read_out();
-                    if (url != null && !uncommit_urls.contains(url)) {
+                    if (url == null) break;
+                    if (!uncommit_urls.contains(url)) {
                         uncommit_urls.add(url);
                         RuntimeInfo.getInstance().update_uncommit_url_count(1);
                     }
