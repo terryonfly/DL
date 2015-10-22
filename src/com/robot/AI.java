@@ -1,6 +1,7 @@
 package com.robot;
 
 import com.robot.spider.Spider;
+import com.robot.spider.URLQueue;
 import com.robot.split.Splitor;
 
 import java.util.ArrayList;
@@ -12,14 +13,16 @@ public class AI {
 
     public static void main(String[] args) throws Exception {
         System.out.println("\n===== Begin =====\n");
-
+	    
+        URLQueue urlQueue = new URLQueue("URL Queue");
+        urlQueue.start();
         ArrayList<Spider> spiders = new ArrayList<Spider>();
-        int spiders_count = 500;
+        int spiders_count = 15;
         for (int i = 0; i < spiders_count; i ++) {
-            Spider spider = new Spider("Spider");
+            Spider spider = new Spider("Spider", urlQueue);
             spiders.add(spider);
             spider.start();
-//            Thread.sleep(200);
+            Thread.sleep(3000);
         }
         Splitor splitor = new Splitor("Splitor");
         splitor.start();

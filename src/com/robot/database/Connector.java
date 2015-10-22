@@ -9,8 +9,8 @@ import java.util.ArrayList;
 
 public class Connector {
     String driver = "com.mysql.jdbc.Driver";
-//    String url = "jdbc:mysql://localhost/corpus?Unicode=true&characterEncoding=UTF8";
-    String url = "jdbc:mysql://robot.mokfc.com/corpus?Unicode=true&characterEncoding=UTF8";
+    String url = "jdbc:mysql://localhost/corpus?Unicode=true&characterEncoding=UTF8";
+//    String url = "jdbc:mysql://robot.mokfc.com/corpus?Unicode=true&characterEncoding=UTF8";
     String user = "root";
     String password = "513939";
 
@@ -197,30 +197,29 @@ public class Connector {
         }
     }
 
-    public String get_url() {
-        String url = "";
+    public ArrayList<String> get_urls(int count) {
+        ArrayList<String> urls = new ArrayList<String>();
         try {
             if(!is_connected() && !connect())
-                return url;
+                return urls;
             Statement statement = conn.createStatement();
-            String sql = "select * from urls where urls.getted = 0 order by rand() limit 1;";
+            String sql = "select * from urls where urls.getted = 0 order by rand() limit " + count + ";";
             ResultSet rs = statement.executeQuery(sql);
-            if (rs.next()) {
+            while (rs.next()) {
                 int url_id = rs.getInt("id");
-                url = rs.getString("url");
+                urls.add(rs.getString("url"));
                 set_url_getted(url_id);
             }
             rs.close();
             statement.close();
         } catch (SQLException e1) {
             e1.printStackTrace();
-            return url;
+            return urls;
         }
-        return url;
+        return urls;
     }
 
     public void set_url_getted(int a_url_id) {
-        RuntimeInfo.getInstance().update_running_page_count(a_url_id);
         try {
             if(!is_connected() && !connect())
                 return;
@@ -256,11 +255,12 @@ public class Connector {
             if(!is_connected() && !connect())
                 return web_content;
             Statement statement = conn.createStatement();
-            String sql = "select * from web_content where web_content.has_split = 0 limit 1;";
+            String sql = "select * from web_content where web_content.has_split = 0 limit 5000;";
             ResultSet rs = statement.executeQuery(sql);
-            if (rs.next()) {
+            while (rs.next()) {
                 int web_content_id = rs.getInt("id");
-                web_content = rs.getString("web_content");
+                web_content += rs.getString("web_content");
+		web_content += "\n";
                 set_web_content_getted(web_content_id);
             }
             rs.close();

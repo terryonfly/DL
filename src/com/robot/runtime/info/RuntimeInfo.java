@@ -6,13 +6,13 @@ package com.robot.runtime.info;
 //饿汉式单例类.在类初始化时，已经自行实例化
 public class RuntimeInfo {
 
-    private int running_page_count = 0;
+    private UncommitCount running_page_count = new UncommitCount();
 
     private int uncommit_word_count = 0;
 
     private int uncommit_phrase_count = 0;
 
-    private int uncommit_url_count = 0;
+    private UncommitCount uncommit_url_count = new UncommitCount();
 
     private String running_sentence = "";
 
@@ -26,11 +26,13 @@ public class RuntimeInfo {
     }
 
     public void print_runtime_info() {
-        System.out.print("pages[" + String.format("%6d", running_page_count) + "] word[" + String.format("%7d", uncommit_word_count) + "] phrase[" + String.format("%7d", uncommit_phrase_count) + "] url[" + String.format("%5d", uncommit_url_count) + "] " + String.format("%s", running_sentence) + "\r");
+        System.out.print("pages[" + String.format("%6d", running_page_count.count) + "] word[" + String.format("%7d", uncommit_word_count) + "] phrase[" + String.format("%7d", uncommit_phrase_count) + "] url[" + String.format("%7d", uncommit_url_count.count) + "] " + String.format("%s", running_sentence) + "\r");
     }
 
     public void update_running_page_count(int a_running_page_count) {
-        running_page_count = a_running_page_count;
+        synchronized (running_page_count) {
+            running_page_count.count += a_running_page_count;
+        }
         print_runtime_info();
     }
 
@@ -45,7 +47,9 @@ public class RuntimeInfo {
     }
 
     public void update_uncommit_url_count(int a_uncommit_url_count) {
-        uncommit_url_count = a_uncommit_url_count;
+	    synchronized (uncommit_url_count) {
+            uncommit_url_count.count += a_uncommit_url_count;
+	    }
         print_runtime_info();
     }
 
@@ -54,3 +58,4 @@ public class RuntimeInfo {
         print_runtime_info();
     }
 }
+

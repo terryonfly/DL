@@ -17,6 +17,7 @@ public class URLQueue implements Runnable {
     Connector db;
     Connector db_get_url;
     ArrayList<String> uncommit_urls;
+    ArrayList<String> target_urls;
     String seed_url = "http://www.baidu.com";
 
     public URLQueue(String a_thread_name) {
@@ -27,6 +28,7 @@ public class URLQueue implements Runnable {
         db_get_url = new Connector();
         db_get_url.connect();
         uncommit_urls = new ArrayList<String>();
+        target_urls = new ArrayList<String>();
     }
 
     public void start() {
@@ -45,11 +47,12 @@ public class URLQueue implements Runnable {
     @Override
     public void run() {
         while (is_run) {
+            if (uncommit_urls.size() < 1000000) check_target_urls();
             if (commit_url()) {
-                RuntimeInfo.getInstance().update_uncommit_url_count(uncommit_urls.size());
+                RuntimeInfo.getInstance().update_uncommit_url_count(-1);
                 //System.out.println(thread_name + " : [ OK uncommit url : " + uncommit_urls.size() + " ]");
             } else {
-                RuntimeInfo.getInstance().update_uncommit_url_count(uncommit_urls.size());
+                //RuntimeInfo.getInstance().update_uncommit_url_count(uncommit_urls.size());
                 //System.out.println(thread_name + " : [ Empty uncommit url ]");
                 try {
                     Thread.sleep(1000);
@@ -58,6 +61,24 @@ public class URLQueue implements Runnable {
                 }
             }
         }
+    }
+
+    public boolean check_target_urls() {
+        boolean need_fill = false;
+        //synchronized (target_urls) {
+            if (target_urls.size() < 500) {
+                need_fill = true;
+            }
+        //}
+        if (need_fill) {
+            ArrayList<String> fill_urls = db.get_urls(1000);
+            synchronized (target_urls) {
+                for (int i = 0; i < fill_urls.size(); i ++) {
+                    target_urls.add(fill_urls.get(i));
+                }
+            }
+        }
+        return need_fill;
     }
 
     public boolean commit_url() {
@@ -79,6 +100,7 @@ public class URLQueue implements Runnable {
     public void add_urls(ArrayList<String> a_urls) {
         if (a_urls.size() == 0) return;
         synchronized (uncommit_urls) {
+            RuntimeInfo.getInstance().update_uncommit_url_count(a_urls.size());
             for (int i = 0; i < a_urls.size(); i ++) {
                 uncommit_urls.add(a_urls.get(i));
             }
@@ -87,8 +109,12 @@ public class URLQueue implements Runnable {
 
     public String get_one_url() {
         String url = "";
-        synchronized (db_get_url) {
-            url = db_get_url.get_url();
+        synchronized (target_urls) {
+            if (target_urls.size() > 0) {
+                url = target_urls.get(0);
+                target_urls.remove(0);
+                RuntimeInfo.getInstance().update_running_page_count(1);
+            }
         }
         if (url.length() == 0) {
             url = seed_url;
