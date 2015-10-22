@@ -1,6 +1,7 @@
 package com.robot;
 
 import com.robot.spider.Spider;
+import com.robot.spider.URLCache;
 import com.robot.spider.URLQueue;
 import com.robot.split.Splitor;
 
@@ -17,7 +18,7 @@ public class AI {
         URLQueue urlQueue = new URLQueue("URL Queue");
         urlQueue.start();
         ArrayList<Spider> spiders = new ArrayList<Spider>();
-        int spiders_count = 15;
+        int spiders_count = 50;
         for (int i = 0; i < spiders_count; i ++) {
             Spider spider = new Spider("Spider", urlQueue);
             spiders.add(spider);

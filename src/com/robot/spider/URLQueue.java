@@ -19,6 +19,7 @@ public class URLQueue implements Runnable {
     ArrayList<String> uncommit_urls;
     ArrayList<String> target_urls;
     String seed_url = "http://www.baidu.com";
+    URLCache urlCache;
 
     public URLQueue(String a_thread_name) {
         thread_name = a_thread_name;
@@ -29,6 +30,7 @@ public class URLQueue implements Runnable {
         db_get_url.connect();
         uncommit_urls = new ArrayList<String>();
         target_urls = new ArrayList<String>();
+        urlCache = new URLCache();
     }
 
     public void start() {
@@ -85,10 +87,27 @@ public class URLQueue implements Runnable {
         String url_to_commit = null;
         boolean res = false;
         synchronized (uncommit_urls) {
+            if (uncommit_urls.size() < 100) {
+                while (uncommit_urls.size() < 1000) {
+                    String url = urlCache.read_out();
+                    if (url != null && !uncommit_urls.contains(url)) {
+                        uncommit_urls.add(url);
+                        RuntimeInfo.getInstance().update_uncommit_url_count(1);
+                    }
+                }
+            }
             if (uncommit_urls.size() > 0) {
                 url_to_commit = uncommit_urls.get(0);
                 uncommit_urls.remove(0);
                 res = true;
+            }
+            if (uncommit_urls.size() > 1000000) {
+                while (uncommit_urls.size() > 500000) {
+                    String url = target_urls.get(0);
+                    target_urls.remove(0);
+                    urlCache.write_in(url);
+                    RuntimeInfo.getInstance().update_uncommit_url_count(-1);
+                }
             }
         }
         if (res) {
@@ -99,12 +118,16 @@ public class URLQueue implements Runnable {
 
     public void add_urls(ArrayList<String> a_urls) {
         if (a_urls.size() == 0) return;
+        int added_url_count = 0;
         synchronized (uncommit_urls) {
-            RuntimeInfo.getInstance().update_uncommit_url_count(a_urls.size());
             for (int i = 0; i < a_urls.size(); i ++) {
-                uncommit_urls.add(a_urls.get(i));
+                if (!uncommit_urls.contains(a_urls.get(i))) {
+                    uncommit_urls.add(a_urls.get(i));
+                    added_url_count ++;
+                }
             }
         }
+        RuntimeInfo.getInstance().update_uncommit_url_count(added_url_count);
     }
 
     public String get_one_url() {
