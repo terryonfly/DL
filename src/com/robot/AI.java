@@ -14,19 +14,29 @@ public class AI {
 
     public static void main(String[] args) throws Exception {
         System.out.println("\n===== Begin =====\n");
-	    
+
+        boolean only_load = false;
+        if (args.length > 0) {
+            if (args[0].equals("load")) {
+                only_load = true;
+            }
+        }
+        only_load = true;
+
         URLQueue urlQueue = new URLQueue("URL Queue");
         urlQueue.start();
         ArrayList<Spider> spiders = new ArrayList<Spider>();
-        int spiders_count = 50;
+        int spiders_count = 60;
         for (int i = 0; i < spiders_count; i ++) {
             Spider spider = new Spider("Spider", urlQueue);
             spiders.add(spider);
             spider.start();
             Thread.sleep(3000);
         }
-        Splitor splitor = new Splitor("Splitor");
-        splitor.start();
+        if (!only_load) {
+            Splitor splitor = new Splitor("Splitor");
+            splitor.start();
+        }
 
         while (true);
 
