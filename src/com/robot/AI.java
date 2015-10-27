@@ -21,12 +21,11 @@ public class AI {
                 only_load = true;
             }
         }
-        only_load = true;
 
         URLQueue urlQueue = new URLQueue("URL Queue");
         urlQueue.start();
         ArrayList<Spider> spiders = new ArrayList<Spider>();
-        int spiders_count = 60;
+        int spiders_count = 30;
         for (int i = 0; i < spiders_count; i ++) {
             Spider spider = new Spider("Spider", urlQueue);
             spiders.add(spider);
