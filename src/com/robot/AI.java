@@ -32,7 +32,7 @@ public class AI {
             Spider spider = new Spider("Spider", urlQueue);
             spiders.add(spider);
             spider.start();
-            Thread.sleep(3000);
+//            Thread.sleep(3000);
         }
         if (!only_load) {
             Splitor splitor = new Splitor("Splitor");
@@ -40,7 +40,7 @@ public class AI {
         }
 
         while (true) {
-//            RuntimeInfo.getInstance().print_runtime_info();
+            RuntimeInfo.getInstance().print_runtime_info();
             Thread.sleep(1000);
         }
 
