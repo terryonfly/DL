@@ -28,7 +28,7 @@ public class AI {
         ArrayList<Spider> spiders = new ArrayList<Spider>();
         int spiders_count = 200;
         for (int i = 0; i < spiders_count; i ++) {
-            System.out.printf("run %dth 'Spider' thread\n");
+            System.out.printf("run %dth 'Spider' thread\n", i);
             Spider spider = new Spider("Spider", urlQueue);
             spiders.add(spider);
             spider.start();
