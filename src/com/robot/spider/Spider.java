@@ -53,7 +53,7 @@ public class Spider implements Runnable {
             while (is_run) {
                 String target_url = urlQueue.get_one_url();
                 if (target_url.length() > 0) {
-                    System.out.printf("%s                                                        \n", target_url);
+//                    System.out.printf("%s                                                        \n", target_url);
                     pageAnalyzer.set_taget_url(target_url);
                     // Content Data
                     ArrayList<String> content_datas = pageAnalyzer.getContentDatas();

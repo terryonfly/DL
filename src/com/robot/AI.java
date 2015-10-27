@@ -1,5 +1,6 @@
 package com.robot;
 
+import com.robot.runtime.info.RuntimeInfo;
 import com.robot.spider.Spider;
 import com.robot.spider.URLCache;
 import com.robot.spider.URLQueue;
@@ -25,7 +26,7 @@ public class AI {
         URLQueue urlQueue = new URLQueue("URL Queue");
         urlQueue.start();
         ArrayList<Spider> spiders = new ArrayList<Spider>();
-        int spiders_count = 30;
+        int spiders_count = 60;
         for (int i = 0; i < spiders_count; i ++) {
             Spider spider = new Spider("Spider", urlQueue);
             spiders.add(spider);
@@ -37,7 +38,10 @@ public class AI {
             splitor.start();
         }
 
-        while (true);
+        while (true) {
+            RuntimeInfo.getInstance().print_runtime_info();
+            Thread.sleep(100);
+        }
 
 //        System.out.println("\n====== End ======\n");
     }

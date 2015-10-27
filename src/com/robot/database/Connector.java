@@ -191,7 +191,7 @@ public class Connector {
             statement.executeUpdate(sql);
             statement.close();
         } catch (SQLException e1) {
-            System.err.printf("add_url err : %s\n", e1);
+//            System.err.printf("add_url err : %s\n", e1);
 //            e1.printStackTrace();
             return;
         }
@@ -213,7 +213,7 @@ public class Connector {
             rs.close();
             statement.close();
         } catch (SQLException e1) {
-            e1.printStackTrace();
+//            e1.printStackTrace();
             return urls;
         }
         return urls;
@@ -228,7 +228,7 @@ public class Connector {
             statement.executeUpdate(sql);
             statement.close();
         } catch (SQLException e1) {
-            e1.printStackTrace();
+//            e1.printStackTrace();
             return;
         }
     }
@@ -243,7 +243,7 @@ public class Connector {
             statement.executeUpdate(sql);
             statement.close();
         } catch (SQLException e1) {
-            System.err.printf("add_web_content err : %s\n", e1);
+//            System.err.printf("add_web_content err : %s\n", e1);
 //            e1.printStackTrace();
             return;
         }
@@ -266,7 +266,7 @@ public class Connector {
             rs.close();
             statement.close();
         } catch (SQLException e1) {
-            e1.printStackTrace();
+//            e1.printStackTrace();
             return web_content;
         }
         return web_content;
@@ -281,7 +281,7 @@ public class Connector {
             statement.executeUpdate(sql);
             statement.close();
         } catch (SQLException e1) {
-            e1.printStackTrace();
+//            e1.printStackTrace();
             return;
         }
     }
