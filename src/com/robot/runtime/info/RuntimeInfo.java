@@ -33,29 +33,29 @@ public class RuntimeInfo {
         synchronized (running_page_count) {
             running_page_count.count += a_running_page_count;
         }
-//        print_runtime_info();
+        print_runtime_info();
     }
 
     public void update_uncommit_word_count(int a_uncommit_word_count) {
         uncommit_word_count = a_uncommit_word_count;
-//        print_runtime_info();
+        print_runtime_info();
     }
 
     public void update_uncommit_phrase_count(int a_uncommit_phrase_count) {
         uncommit_phrase_count = a_uncommit_phrase_count;
-//        print_runtime_info();
+        print_runtime_info();
     }
 
     public void update_uncommit_url_count(int a_uncommit_url_count) {
 	    synchronized (uncommit_url_count) {
             uncommit_url_count.count += a_uncommit_url_count;
 	    }
-//        print_runtime_info();
+        print_runtime_info();
     }
 
     public void update_running_sentence(String a_running_sentence) {
         running_sentence = a_running_sentence;
-//        print_runtime_info();
+        print_runtime_info();
     }
 }
 

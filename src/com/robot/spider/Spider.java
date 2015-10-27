@@ -24,8 +24,8 @@ public class Spider implements Runnable {
     public Spider(String a_thread_name, URLQueue a_urlQueue) {
         thread_name = a_thread_name;
         is_run = false;
-        db = new Connector();
-        db.connect();
+//        db = new Connector();
+//        db.connect();
         //urlQueue = new URLQueue("URL Queue");
         //urlQueue.start();
         urlQueue = a_urlQueue;
@@ -55,19 +55,19 @@ public class Spider implements Runnable {
                 if (target_url.length() > 0) {
 //                    System.out.printf("%s                                                        \n", target_url);
                     pageAnalyzer.set_taget_url(target_url);
-                    // Content Data
-                    ArrayList<String> content_datas = pageAnalyzer.getContentDatas();
-                    for (int i = 0; i < content_datas.size(); i ++) {
-                        ArrayList<String> string_sentences = sentenceSplitor.split_sentence(content_datas.get(i));
-                        for (int k = 0; k < string_sentences.size(); k++) {
-                            String string_sentence = string_sentences.get(k);
-                            if (string_sentence.length() > 35 || string_sentence.length() == 0)
-                                continue;
-                            if (!isMessyCode(cache_chars_unnormal, string_sentence)) {
-                                db.add_web_content(string_sentence);
-                            }
-                        }
-                    }
+//                    // Content Data
+//                    ArrayList<String> content_datas = pageAnalyzer.getContentDatas();
+//                    for (int i = 0; i < content_datas.size(); i ++) {
+//                        ArrayList<String> string_sentences = sentenceSplitor.split_sentence(content_datas.get(i));
+//                        for (int k = 0; k < string_sentences.size(); k++) {
+//                            String string_sentence = string_sentences.get(k);
+//                            if (string_sentence.length() > 35 || string_sentence.length() == 0)
+//                                continue;
+//                            if (!isMessyCode(cache_chars_unnormal, string_sentence)) {
+//                                db.add_web_content(string_sentence);
+//                            }
+//                        }
+//                    }
                     // Links
                     urlQueue.add_urls(pageAnalyzer.getLinks());
                 } else {

@@ -26,8 +26,9 @@ public class AI {
         URLQueue urlQueue = new URLQueue("URL Queue");
         urlQueue.start();
         ArrayList<Spider> spiders = new ArrayList<Spider>();
-        int spiders_count = 60;
+        int spiders_count = 200;
         for (int i = 0; i < spiders_count; i ++) {
+            System.out.printf("run %dth 'Spider' thread\n");
             Spider spider = new Spider("Spider", urlQueue);
             spiders.add(spider);
             spider.start();
@@ -39,8 +40,8 @@ public class AI {
         }
 
         while (true) {
-            RuntimeInfo.getInstance().print_runtime_info();
-            Thread.sleep(100);
+//            RuntimeInfo.getInstance().print_runtime_info();
+            Thread.sleep(1000);
         }
 
 //        System.out.println("\n====== End ======\n");
